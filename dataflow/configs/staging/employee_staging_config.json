@@ -1,0 +1,5 @@
+{
+  "source_table": "gcp-de-batch-sim-464816.Employee_Details_raw.employee_raw",
+  "target_table": "gcp-de-batch-sim-464816.Employee_Details_staging.employee_staging",
+  "schema": "schemas/staging/employee_staging_schema.json"
+}

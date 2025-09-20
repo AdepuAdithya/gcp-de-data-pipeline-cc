@@ -1,0 +1,8 @@
+[
+      {"name": "DepartmentID", "type": "STRING", "mode": "REQUIRED"},
+      {"name": "Name", "type": "STRING", "mode": "REQUIRED"},
+      {"name": "GroupName", "type": "STRING", "mode": "REQUIRED"},
+      {"name": "ModifiedDate", "type": "STRING", "mode": "REQUIRED"},
+      {"name": "RawIngestionTime", "type": "TIMESTAMP", "mode": "REQUIRED"},
+      {"name": "LoadDate", "type": "DATE", "mode": "REQUIRED"}
+]

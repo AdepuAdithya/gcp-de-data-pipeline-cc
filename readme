@@ -22,3 +22,6 @@ dataflow_project/
 ├── tests/
 │   └── test_pipelines.py
 └── README.md
+
+
+-- Need to get schema automatically from BigQuery

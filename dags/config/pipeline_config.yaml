@@ -1,0 +1,94 @@
+# Configuration for Employee Data Pipeline
+
+project_id: "famous-athlete-476816-f8"
+region: "us-central1"
+
+# Composer Bucket (auto-detected from environment)
+composer:
+  bucket: "us-central1-gcp-de-data-pip-8156fd48-bucket"
+
+# External Repository References
+repositories:
+  dataflow:
+    repo_name: "gcp-de-data-pipeline"
+    # Dataflow scripts will be stored in Composer bucket
+    gcs_bucket: "us-central1-gcp-de-data-pip-8156fd48-bucket"
+    gcs_path: "data/dataflow/"
+  
+  dbt:
+    repo_name: "gcp-de-data-pipeline-dbt"
+    # dbt project will be stored in Composer bucket
+    gcs_bucket: "us-central1-gcp-de-data-pip-8156fd48-bucket"
+    gcs_path: "data/dbt/"
+
+# GCS Configuration - Create these buckets
+gcs:
+  # Landing bucket for incoming CSV files
+  source_bucket: "gcp-de-batch-data-01"
+  landing_prefix: "landing/"
+  archive_prefix: "archived/"
+  
+  files:
+    employee:
+      pattern: "Employee.csv"
+      sensor_timeout: 3600
+      poke_interval: 60
+    
+    department:
+      pattern: "Department.csv"
+      sensor_timeout: 3600
+      poke_interval: 60
+
+# BigQuery Datasets (Already exist)
+bigquery:
+  raw_dataset: "Employee_Details_raw"
+  staging_dataset: "Employee_Details_stg"
+  curation_dataset: "Employee_Details_cur"
+
+# Dataflow Configuration
+dataflow:
+  # Temp bucket for Dataflow - create this
+  temp_bucket: "dataflow-temp-famous-athlete"
+  temp_location: "gs://dataflow-temp-famous-athlete/temp/"
+  staging_location: "gs://dataflow-temp-famous-athlete/staging/"
+  
+  # Use Composer's service account
+  service_account: "889802921645-compute@developer.gserviceaccount.com"
+  network: "default"
+  machine_type: "n1-standard-2"
+  max_workers: 4
+  
+  jobs:
+    gcs_to_raw:
+      employee:
+        script: "employee_raw_pipeline.py"
+        job_name: "emp_raw_job"
+        table: "Employee_raw"
+      
+      department:
+        script: "department_raw_pipeline.py"
+        job_name: "dep_raw_job"
+        table: "Department_raw"
+    
+    raw_to_staging:
+      employee:
+        script: "employee_staging_pipeline.py"
+        job_name: "emp_staging_job"
+        table: "Employee_stg"
+      
+      department:
+        script: "department_staging_pipeline.py"
+        job_name: "dep_staging_job"
+        table: "Department_stg"
+
+# dbt Configuration
+dbt:
+  # Path inside Composer environment where dbt will run
+  project_dir: "/home/airflow/gcs/data/dbt/gcp_de_data_pipeline_dbt"
+  profiles_dir: "/home/airflow/gcs/data/dbt"
+  target: "prod"
+  models: "EmployeeDepartment_cur"
+
+# Notifications
+notifications:
+  email: "adithyagcpdataengineer03@gmail.com"

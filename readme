@@ -1,27 +1,21 @@
+# GCP Data Engineering Pipeline - Cloud Composer Orchestration
 
-dataflow_project/
-├── configs/
-│   ├── gcs_to_raw/
-│   │   ├── department_config.json
-│   │   └── employee_config.json
-│   ├── raw_to_staging/
-│   │   ├── department_staging_config.json
-│   │   └── employee_staging_config.json
-├── schemas/
-│   ├── raw/
-│   │   ├── department_raw_schema.json
-│   │   └── employee_raw_schema.json
-│   ├── staging/
-│   │   ├── department_staging_schema.json
-│   │   └── employee_staging_schema.json
-├── src/
-│   ├── main.py
-│   ├── gcs_to_raw_pipeline.py
-│   ├── raw_to_staging_pipeline.py
-│   ├── utils.py
-├── tests/
-│   └── test_pipelines.py
-└── README.md
+End-to-end data pipeline orchestration using Cloud Composer (Airflow) for Employee data processing.
 
+## Pipeline Flow
 
--- Need to get schema automatically from BigQuery
+1. **Sensor**: Wait for CSV files to arrive in GCS landing bucket
+2. **Raw Ingestion**: Dataflow jobs load CSV to BigQuery raw tables
+3. **Staging**: Dataflow transforms raw data to staging tables
+4. **Curation**: dbt models create final curated tables with SCD Type 2
+5. **Archive**: Move processed files to archive folder
+
+## Setup
+
+### Prerequisites
+- Cloud Composer environment running
+- BigQuery datasets created (raw, staging, curation)
+- GCS buckets created (landing, temp)
+- Dataflow and dbt repositories prepared
+
+### Deployment

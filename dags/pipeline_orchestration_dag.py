@@ -31,7 +31,7 @@ default_args = {
     'email': [config['notifications']['email']],
     'email_on_failure': True,
     'email_on_retry': False,
-    'retries': 2,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
     'execution_timeout': timedelta(hours=2),
 }
@@ -63,7 +63,7 @@ with DAG(
     dag_id='employee_data_pipeline_v1',
     default_args=default_args,
     description='End-to-end Employee Data Pipeline: GCS -> Raw -> Staging -> Curation',
-    schedule_interval='@daily',  # Run daily
+    schedule_interval= None,  # manual trigger only
     start_date=datetime(2025, 11, 1),
     catchup=False,
     tags=['employee', 'dataflow', 'dbt', 'production'],

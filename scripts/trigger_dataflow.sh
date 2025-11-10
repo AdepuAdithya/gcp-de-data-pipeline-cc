@@ -15,12 +15,12 @@ PROJECT_ID="famous-athlete-476816-f8"
 REGION="us-central1"
 TEMP_LOCATION="gs://dataflow-temp-famous-athlete/temp/"
 STAGING_LOCATION="gs://dataflow-temp-famous-athlete/staging/"
-SERVICE_ACCOUNT="709863046085-compute@developer.gserviceaccount.com"
+SERVICE_ACCOUNT="889802921645-compute@developer.gserviceaccount.com"
 MACHINE_TYPE="n1-standard-2"
 MAX_WORKERS=4
 
 # Generate unique job name with timestamp
-UNIQUE_JOB_NAME="${JOB_NAME}-$(date +%Y%m%d-%H%M%S)"
+UNIQUE_JOB_NAME="${JOB_NAME}-$(date +%Y%m%d%H%M%S)"
 
 echo "Job Name: ${UNIQUE_JOB_NAME}"
 echo "Script: ${SCRIPT_PATH}"

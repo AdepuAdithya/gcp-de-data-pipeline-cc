@@ -62,29 +62,29 @@ dataflow:
     gcs_to_raw:
       employee:
         script: "employee_raw_pipeline.py"
-        job_name: "emp_raw_job"
+        job_name: "emprawjob"
         table: "Employee_raw"
       
       department:
         script: "department_raw_pipeline.py"
-        job_name: "dep_raw_job"
+        job_name: "deprawjob"
         table: "Department_raw"
     
     raw_to_staging:
       employee:
         script: "employee_staging_pipeline.py"
-        job_name: "emp_staging_job"
+        job_name: "empstagingjob"
         table: "Employee_stg"
       
       department:
         script: "department_staging_pipeline.py"
-        job_name: "dep_staging_job"
+        job_name: "depstagingjob"
         table: "Department_stg"
 
 # dbt Configuration
 dbt:
   # Path inside Composer environment where dbt will run
-  project_dir: "/home/airflow/gcs/data/dbt/gcp_de_data_pipeline_dbt"
+  project_dir: "/home/airflow/gcs/data/dbt"
   profiles_dir: "/home/airflow/gcs/data/dbt"
   target: "prod"
   models: "EmployeeDepartment_cur"

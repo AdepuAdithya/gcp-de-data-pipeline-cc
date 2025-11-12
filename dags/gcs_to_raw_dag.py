@@ -80,7 +80,7 @@ with DAG(
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['gcs_to_raw']['employee'],
                 f"gs://{config['gcs']['source_bucket']}/{config['gcs']['landing_prefix']}{config['gcs']['files']['employee']['pattern']}",
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}"
             ),
         )
         department_raw = BashOperator(
@@ -88,7 +88,7 @@ with DAG(
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['gcs_to_raw']['department'],
                 f"gs://{config['gcs']['source_bucket']}/{config['gcs']['landing_prefix']}{config['gcs']['files']['department']['pattern']}",
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}"
             ),
         )
 

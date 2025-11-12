@@ -48,7 +48,7 @@ def build_dataflow_command(job_config, input_path, output_table):
         --project={config['project_id']} \
         --region={config['region']} \
         --runner=DataflowRunner \
-        --job_name={job_config['job_name']}-$(date +%Y%m%d-%H%M%S) \
+        --job_name={job_config['job_name']}-$(date +%Y%m%d%H%M%S) \
         --temp_location={config['dataflow']['temp_location']} \
         --staging_location={config['dataflow']['staging_location']} \
         --input={input_path} \
@@ -60,7 +60,7 @@ def build_dataflow_command(job_config, input_path, output_table):
 
 # DAG definition
 with DAG(
-    dag_id='employee_data_pipeline_v1',
+    dag_id='end_to_end_pipeline',
     default_args=default_args,
     description='End-to-end Employee Data Pipeline: GCS -> Raw -> Staging -> Curation',
     schedule_interval= None,  # manual trigger only
@@ -105,7 +105,7 @@ with DAG(
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['gcs_to_raw']['employee'],
                 f"gs://{config['gcs']['source_bucket']}/{config['gcs']['landing_prefix']}{config['gcs']['files']['employee']['pattern']}",
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}"
             ),
         )
         
@@ -114,7 +114,7 @@ with DAG(
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['gcs_to_raw']['department'],
                 f"gs://{config['gcs']['source_bucket']}/{config['gcs']['landing_prefix']}{config['gcs']['files']['department']['pattern']}",
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}"
             ),
         )
 
@@ -128,8 +128,8 @@ with DAG(
             task_id='employee_raw_to_staging',
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['raw_to_staging']['employee'],
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}",
-                f"{config['project_id']}:{config['bigquery']['staging_dataset']}.{config['dataflow']['jobs']['raw_to_staging']['employee']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['employee']['table']}",
+                f"{config['project_id']}.{config['bigquery']['staging_dataset']}.{config['dataflow']['jobs']['raw_to_staging']['employee']['table']}"
             ),
         )
         
@@ -137,8 +137,8 @@ with DAG(
             task_id='department_raw_to_staging',
             bash_command=build_dataflow_command(
                 config['dataflow']['jobs']['raw_to_staging']['department'],
-                f"{config['project_id']}:{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}",
-                f"{config['project_id']}:{config['bigquery']['staging_dataset']}.{config['dataflow']['jobs']['raw_to_staging']['department']['table']}"
+                f"{config['project_id']}.{config['bigquery']['raw_dataset']}.{config['dataflow']['jobs']['gcs_to_raw']['department']['table']}",
+                f"{config['project_id']}.{config['bigquery']['staging_dataset']}.{config['dataflow']['jobs']['raw_to_staging']['department']['table']}"
             ),
         )
 
